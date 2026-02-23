@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Bilmek AI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #222;
+      color: white;
+      text-align: center;
+      padding-top: 50px;
+    }
+    #chatbox {
+      margin: 20px auto;
+      width: 300px;
+      background: #333;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    #userInput {
+      width: 80%;
+      padding: 5px;
+    }
+    #sendBtn {
+      padding: 5px 10px;
+    }
+    #chatOutput {
+      margin-top: 10px;
+      text-align: left;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Välkommen till Bilmek AI</h1>
+  
+  <div id="chatbox">
+    <input type="text" id="userInput" placeholder="Skriv något...">
+    <button id="sendBtn">Skicka</button>
+    <div id="chatOutput"></div>
+  </div>
+
+  <script>
+    const sendBtn = document.getElementById('sendBtn');
+    const userInput = document.getElementById('userInput');
+    const chatOutput = document.getElementById('chatOutput');
+
+    sendBtn.addEventListener('click', () => {
+      const userText = userInput.value;
+      if(userText.trim() === "") return;
+      const pUser = document.createElement('p');
+      pUser.textContent = "Du: " + userText;
+      chatOutput.appendChild(pUser);
+
+      // Simulerat AI-svar
+      const pAI = document.createElement('p');
+      pAI.textContent = "AI: Jag förstår '" + userText + "'";
+      chatOutput.appendChild(pAI);
+
+      userInput.value = "";
+      chatOutput.scrollTop = chatOutput.scrollHeight;
+    });
+  </script>
+</body>
+</html>
