@@ -4,42 +4,90 @@
   <meta charset="UTF-8">
   <title>Bilmek AI</title>
   <style>
+    /* Bakgrund och grundlayout */
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      background: #222;
+      background: linear-gradient(to bottom, #1c1c1c, #333);
       color: white;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
       padding-top: 50px;
     }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    header h1 {
+      font-size: 3em;
+      color: #ffcc00;
+      margin: 0;
+    }
+    header p {
+      font-size: 1.2em;
+      color: #ccc;
+    }
+
+    /* Chattruta */
     #chatbox {
-      margin: 20px auto;
-      width: 300px;
-      background: #333;
-      padding: 10px;
+      background: #222;
+      width: 350px;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    #chatOutput {
+      height: 200px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+      padding: 5px;
+      background: #111;
       border-radius: 10px;
     }
     #userInput {
-      width: 80%;
-      padding: 5px;
+      width: 70%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      margin-right: 5px;
     }
     #sendBtn {
-      padding: 5px 10px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 10px;
+      background-color: #ffcc00;
+      color: #222;
+      font-weight: bold;
+      cursor: pointer;
     }
-    #chatOutput {
-      margin-top: 10px;
-      text-align: left;
-      max-height: 200px;
-      overflow-y: auto;
+    #sendBtn:hover {
+      background-color: #ffaa00;
+    }
+
+    /* Små detaljer */
+    p {
+      margin: 5px 0;
     }
   </style>
 </head>
 <body>
-  <h1>Välkommen till Bilmek AI</h1>
-  
+
+  <!-- Header / titel -->
+  <header>
+    <h1>Bilmek AI</h1>
+    <p>Din AI-assistent för bilmekanik</p>
+  </header>
+
+  <!-- Chattruta -->
   <div id="chatbox">
+    <div id="chatOutput"></div>
     <input type="text" id="userInput" placeholder="Skriv något...">
     <button id="sendBtn">Skicka</button>
-    <div id="chatOutput"></div>
   </div>
 
   <script>
@@ -50,6 +98,8 @@
     sendBtn.addEventListener('click', () => {
       const userText = userInput.value;
       if(userText.trim() === "") return;
+
+      // Visa användarens meddelande
       const pUser = document.createElement('p');
       pUser.textContent = "Du: " + userText;
       chatOutput.appendChild(pUser);
@@ -59,9 +109,16 @@
       pAI.textContent = "AI: Jag förstår '" + userText + "'";
       chatOutput.appendChild(pAI);
 
+      // Rensa input och scrolla ned
       userInput.value = "";
       chatOutput.scrollTop = chatOutput.scrollHeight;
     });
+
+    // Tryck på Enter för att skicka
+    userInput.addEventListener('keypress', (e) => {
+      if(e.key === 'Enter') sendBtn.click();
+    });
   </script>
+
 </body>
 </html>
