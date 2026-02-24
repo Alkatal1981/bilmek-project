@@ -11,18 +11,26 @@ sendBtn.addEventListener('click', async () => {
   pUser.textContent = "Du: " + userText;
   chatOutput.appendChild(pUser);
 
-  // Skicka meddelandet till Vercel backend
-const res = await fetch("https://bilmek-project-wjick0iwi-alkatal1981s-projects.vercel.app/api/ai", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ message: userText })
-});
-  const data = await res.json();
+  try {
+    const res = await fetch("https://bilmek-project-wjick0iwi-alkatal1981s-projects.vercel.app/api/ai", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: userText })
+    });
 
-  // Visa AI-svaret
-  const pAI = document.createElement('p');
-  pAI.textContent = "AI: " + data.reply;
-  chatOutput.appendChild(pAI);
+    const data = await res.json();
+
+    // Visa AI-svaret
+    const pAI = document.createElement('p');
+    pAI.textContent = "AI: " + data.reply;
+    chatOutput.appendChild(pAI);
+
+  } catch (error) {
+    const pError = document.createElement('p');
+    pError.textContent = "AI: Något gick fel.";
+    chatOutput.appendChild(pError);
+    console.error(error);
+  }
 
   userInput.value = "";
   chatOutput.scrollTop = chatOutput.scrollHeight;
