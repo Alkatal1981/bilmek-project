@@ -12,12 +12,11 @@ sendBtn.addEventListener('click', async () => {
   chatOutput.appendChild(pUser);
 
   // Skicka meddelandet till Vercel backend
-  const res = await fetch("https://DIN-VERCEL-LÄNK.vercel.app/api/ai", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message: userText })
-  });
-
+const res = await fetch("https://bilmek-project-wjick0iwi-alkatal1981s-projects.vercel.app/api/ai", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ message: userText })
+});
   const data = await res.json();
 
   // Visa AI-svaret
