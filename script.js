@@ -1,42 +1,52 @@
-const sendBtn = document.getElementById('sendBtn');
-const userInput = document.getElementById('userInput');
-const chatOutput = document.getElementById('chatOutput');
+const sendBtn = document.getElementById("sendBtn");
+const userInput = document.getElementById("userInput");
+const chatOutput = document.getElementById("chatOutput");
 
-sendBtn.addEventListener('click', async () => {
-  const userText = userInput.value;
-  if (userText.trim() === "") return;
+sendBtn.addEventListener("click", async () => {
+  const userText = userInput.value.trim();
+  if (!userText) return;
 
-  // Visa meddelandet från användaren
-  const pUser = document.createElement('p');
-  pUser.textContent = "Du: " + userText;
-  chatOutput.appendChild(pUser);
+  // Visa användarens meddelande
+  const userMessage = document.createElement("p");
+  userMessage.textContent = "Du: " + userText;
+  chatOutput.appendChild(userMessage);
 
   try {
-    const res = await fetch("https://bilmek-project-wjick0iwi-alkatal1981s-projects.vercel.app/api/ai", {
+    const response = await fetch("https://bilmek-project-wjick0iwi-alkatal1981s-projects.vercel.app/api/ai", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({ message: userText })
     });
 
-    const data = await res.json();
+    const data = await response.json();
 
-    // Visa AI-svaret
-    const pAI = document.createElement('p');
-    pAI.textContent = "AI: " + data.reply;
-    chatOutput.appendChild(pAI);
+    const aiMessage = document.createElement("p");
+
+    if (data.reply) {
+      aiMessage.textContent = "AI: " + data.reply;
+    } else {
+      aiMessage.textContent = "AI: Något gick fel.";
+      console.log("Server response:", data);
+    }
+
+    chatOutput.appendChild(aiMessage);
 
   } catch (error) {
-    const pError = document.createElement('p');
-    pError.textContent = "AI: Något gick fel.";
-    chatOutput.appendChild(pError);
-    console.error(error);
+    console.error("Fetch error:", error);
+
+    const errorMessage = document.createElement("p");
+    errorMessage.textContent = "AI: Kunde inte kontakta servern.";
+    chatOutput.appendChild(errorMessage);
   }
 
   userInput.value = "";
   chatOutput.scrollTop = chatOutput.scrollHeight;
 });
 
-// Skicka med Enter-tangenten
-userInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') sendBtn.click();
+userInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    sendBtn.click();
+  }
 });
