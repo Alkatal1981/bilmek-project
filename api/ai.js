@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
@@ -10,21 +10,24 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
         model: "gpt-4o-mini",
-        messages: [{ role: "user", content: message }]
-      })
+        messages: [
+          { role: "system", content: "You are a helpful assistant." },
+          { role: "user", content: message },
+        ],
+      }),
     });
 
     const data = await response.json();
 
     res.status(200).json({
-      reply: data.choices[0].message.content
+      reply: data.choices[0].message.content,
     });
 
   } catch (error) {
-    res.status(500).json({ error: "AI error" });
+    res.status(500).json({ error: "Something went wrong" });
   }
 }
